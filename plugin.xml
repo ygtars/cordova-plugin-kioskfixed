@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        id="cordova-plugin-kiosk-fixed" version="0.4">
+        id="cordova-plugin-kiosk-fixed" version="0.5">
 
     <name>Cordova Kiosk Mode Fixed</name>
     <author>Jan Kalina / Yiğit ARSLAN Fork</author>
     <description>
         Cordova plugin to create Cordova application with "kiosk mode".
-        Updated for Android 12+ (android:exported attributes added).
-        Duplicate activity issues resolved.
+        Updated for Android 12+ (android:exported attributes added) and AppCompat theme.
     </description>
     <keywords>cordova, launcher, homescreen, kiosk, kiosk mode</keywords>
 
@@ -29,12 +28,15 @@
             </feature>
         </config-file>
 
-        
+        <!-- AppCompat theme styles -->
+        <resource-file src="res/values/styles.xml" target="app/src/main/res/values/styles.xml" />
+
+        <!-- Launcher Activity -->
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <activity
                 android:name="jk.cordova.plugin.kiosk.KioskActivity"
                 android:keepScreenOn="true"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+                android:theme="@style/AppTheme.Kiosk"
                 android:exported="true">
                 <intent-filter>
                     <action android:name="android.intent.action.MAIN"/>
