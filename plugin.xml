@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android"
-        id="cordova-plugin-kiosk-fixed" version="0.2">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" 
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="cordova-plugin-kiosk-fixed" version="0.3">
 
     <name>Cordova Kiosk Mode Fixed</name>
     <author>Jan Kalina / Yiğit ARSLAN Fork</author>
@@ -11,7 +12,7 @@
     <keywords>cordova, launcher, homescreen, kiosk, kiosk mode</keywords>
 
     <engines>
-        <engine name="cordova" version=">=3.0.0" />
+        <engine name="cordova" version=">=10.0.0" />
     </engines>
 
     <js-module src="kiosk.js" name="kioskPlugin">
@@ -20,6 +21,7 @@
 
     <platform name="android">
 
+        <!-- Feature -->
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="KioskPlugin">
                 <param name="android-package" value="jk.cordova.plugin.kiosk.KioskPlugin" />
@@ -27,26 +29,18 @@
         </config-file>
 
         <!-- Launcher Activity -->
-        <edit-config file="AndroidManifest.xml" target="/manifest/application/activity[@android:label='@string/activity_name']" mode="merge">
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <activity
-    android:name="jk.cordova.plugin.kiosk.KioskActivity"
-    android:keepScreenOn="true"
-    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-    android:exported="true">
-    <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-        <category android:name="android.intent.category.HOME"/>
-    </intent-filter>
-</activity>
-        </edit-config>
-
-        <config-file target="AndroidManifest.xml" parent="/manifest/application/activity[@android:label='@string/activity_name']">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.HOME" />
-            </intent-filter>
+                android:name="jk.cordova.plugin.kiosk.KioskActivity"
+                android:keepScreenOn="true"
+                android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+                android:exported="true">
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN"/>
+                    <category android:name="android.intent.category.DEFAULT"/>
+                    <category android:name="android.intent.category.HOME"/>
+                </intent-filter>
+            </activity>
         </config-file>
 
         <!-- Broadcast Receiver -->
