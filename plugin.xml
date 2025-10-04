@@ -29,7 +29,7 @@
         </config-file>
 
         <!-- AppCompat theme styles -->
-        <resource-file src="res/values/styles.xml" target="app/src/main/res/values/styles.xml" />
+       <resource-file src="res/values/styles.xml" target="res/values/styles.xml" />
 
         <!-- Launcher Activity -->
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
