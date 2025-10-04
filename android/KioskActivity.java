@@ -41,32 +41,54 @@ public class KioskActivity extends CordovaActivity {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        super.init();
-        
-        if (running) {
-            finish(); // prevent more instances of kiosk activity
-        }
-        
-        loadUrl(launchUrl);
-        
-        // https://github.com/apache/cordova-plugin-statusbar/blob/master/src/android/StatusBar.java
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        
-        // https://github.com/hkalina/cordova-plugin-kiosk/issues/14
-        View decorView = getWindow().getDecorView();
-        // Hide the status bar.
-        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
-        // Remember that you should never show the action bar if the
-        // status bar is hidden, so hide that too if necessary.
-        ActionBar actionBar = getActionBar();
-        if (actionBar != null) actionBar.hide();
-        
-        // add overlay to prevent statusbar access by swiping
-        statusBarOverlay = StatusBarOverlay.createOrObtainPermission(this);
+public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    System.out.println("KioskActivity onCreate start");
+
+    // Cordova initialization
+    super.init();
+
+    // Prevent multiple instances
+    if (running) {
+        System.out.println("Another KioskActivity running, finishing this one");
+        finish();
+        return;
     }
+
+    // Güvenli launchUrl
+    if (launchUrl == null || launchUrl.isEmpty()) {
+        launchUrl = "file:///android_asset/www/index.html";
+        System.out.println("launchUrl was null, using default: " + launchUrl);
+    }
+
+    try {
+        loadUrl(launchUrl);
+    } catch (Exception e) {
+        System.out.println("Error loading launchUrl: " + e.getMessage());
+        e.printStackTrace();
+    }
+
+    // Fullscreen ve status bar gizleme
+    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+    getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+    View decorView = getWindow().getDecorView();
+    decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+    ActionBar actionBar = getActionBar();
+    if (actionBar != null) actionBar.hide();
+
+    // StatusBar overlay (izinleri kontrol et)
+    try {
+        statusBarOverlay = StatusBarOverlay.createOrObtainPermission(this);
+    } catch (Exception e) {
+        System.out.println("StatusBarOverlay failed: " + e.getMessage());
+        e.printStackTrace();
+    }
+
+    running = true;
+    System.out.println("KioskActivity onCreate end");
+}
+
 
     @Override
     public void onDestroy() {
